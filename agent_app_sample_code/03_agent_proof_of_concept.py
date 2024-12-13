@@ -45,10 +45,10 @@ retriever_config = RetrieverToolConfig(
         additional_metadata_columns=[],
     ),
     parameters=RetrieverParametersConfig(num_results=5, query_type="ann"),
-    vector_search_threshold=0.1,
-    chunk_template="Passage text: {chunk_text}\nPassage metadata: {metadata}\n\n",
-    prompt_template="""Use the following pieces of retrieved context to answer the question.\nOnly use the passages from context that are relevant to the query to answer the question, ignore the irrelevant passages.  When responding, cite your source, referring to the passage by the columns in the passage's metadata.\n\nContext: {context}""",
-    tool_description_prompt="Search for documents that are relevant to a user's query about the [REPLACE WITH DESCRIPTION OF YOUR DOCS].",
+    vector_search_threshold=0.001,
+    chunk_template="Passage tekst: {chunk_text}\nPassage metadata: {metadata}\n\n",
+    prompt_template="""Brug følgende modtagne kontekst til at svare på spørgsmål. Brug kun passager der er relevante til at svare på spørgsmålet, ignorer irrelevante passager. Når du svarer, citer dine kilder, referer til passagerne og deres metadata.\n\nContext: {context}""",
+    tool_description_prompt="Søg efter dokumenter der er relevante for en brugers forespæørgsel hos boligsalg og salgsannoncer i Danmark.",
 )
 
 # `llm_endpoint_name`: Model Serving endpoint with the LLM for your Agent.
@@ -59,7 +59,7 @@ llm_config = LLMConfig(
     llm_endpoint_name="databricks-meta-llama-3-1-70b-instruct",
     # Define a template for the LLM prompt.  This is how the RAG chain combines the user's question and the retrieved context.
     llm_system_prompt_template=(
-        """You are a helpful assistant that answers questions by calling tools.  Provide responses ONLY based on the information from tools that are explictly specified to you.  If you do not have a relevant tool for a question, respond with 'Sorry, I'm not trained to answer that question'."""
+        """Du er en hjælpsom assistent der svarer på spørgsmål ved at kalde. Giv kun svar baseret på information modtaget fra værktøjerne som er eksplicit defineret for dig. Hvis du ikke har nogle relevante værktøjer til et spørgsmål, så svar `Desværre. Jeg er ikke trænet til at svare på den slags spørgsmål`. Giv dine svar på Dansk."""
     ),
     # Parameters that control how the LLM responds.
     llm_parameters=LLMParametersConfig(temperature=0.01, max_tokens=1500),
@@ -72,7 +72,7 @@ agent_config = AgentConfig(
         "messages": [
             {
                 "role": "user",
-                "content": "What is RAG?",
+                "content": "Hvilken valuta bruges når boliger i København handles?",
             },
         ]
     },
@@ -137,7 +137,7 @@ agent = AgentWithRetriever()
 # 1st turn of converastion
 first_turn_input = {
     "messages": [
-        {"role": "user", "content": f"what is lakehouse monitoring?"},
+        {"role": "user", "content": f"hvad er prisen på boligerne på rødovrevej og hvem er ejendomsmægleren,estaldo, edc?"},
     ]
 }
 
@@ -145,7 +145,7 @@ response = agent.predict(model_input=first_turn_input)
 
 # 2nd turn of converastion
 new_messages = response["messages"]
-new_messages.append({"role": "user", "content": f"how do i use it?"})
+new_messages.append({"role": "user", "content": f"hvad er priserne på boligerne?"})
 # print(type(new_messages))
 second_turn_input = {"messages": new_messages}
 response = agent.predict(model_input=second_turn_input)

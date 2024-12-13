@@ -78,7 +78,7 @@ mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
 
 # Vector Search endpoint where index is loaded
 # If this does not exist, it will be created
-VECTOR_SEARCH_ENDPOINT = f"{user_name}_vector_search"
+VECTOR_SEARCH_ENDPOINT = "convergeai-vector-endpoint" # f"{user_name}_vector_search"
 
 # Source location for documents
 # You need to create this location and add files
@@ -97,7 +97,7 @@ VECTOR_INDEX_NAME = f"{UC_CATALOG}.{UC_SCHEMA}.{AGENT_NAME}_chunked_docs_index"
 
 # Embedding model endpoint. The list of off-the-shelf embeddings can be found here:
 # https://docs.databricks.com/en/machine-learning/foundation-models/index.html
-EMBEDDING_MODEL_ENDPOINT = "databricks-bge-large-en"
+EMBEDDING_MODEL_ENDPOINT = "databricks-gte-large-en" #  "bge-large-en" # "databricks-bge-large-en"
 # EMBEDDING_MODEL_ENDPOINT = "ep-embeddings-small"
 # EMBEDDING_MODEL_ENDPOINT = "bge-test"
 

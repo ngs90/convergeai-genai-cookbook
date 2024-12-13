@@ -1,0 +1,38 @@
+input_example:
+  messages:
+  - content: "Hvilken valuta bruges n\xE5r boliger i K\xF8benhavn handles?"
+    role: user
+llm_config:
+  llm_endpoint_name: databricks-meta-llama-3-1-70b-instruct
+  llm_parameters:
+    max_tokens: 1500
+    temperature: 0.01
+  llm_system_prompt_template: "Du er en hj\xE6lpsom assistent der svarer p\xE5 sp\xF8\
+    rgsm\xE5l ved at kalde. Giv kun svar baseret p\xE5 information modtaget fra v\xE6\
+    rkt\xF8jerne som er eksplicit defineret for dig. Hvis du ikke har nogle relevante\
+    \ v\xE6rkt\xF8jer til et sp\xF8rgsm\xE5l, s\xE5 svar `Desv\xE6rre. Jeg er ikke\
+    \ tr\xE6net til at svare p\xE5 den slags sp\xF8rgsm\xE5l`. Giv dine svar p\xE5\
+    \ Dansk."
+retriever_tool:
+  chunk_template: 'Passage tekst: {chunk_text}
+
+    Passage metadata: {metadata}
+
+
+    '
+  parameters:
+    num_results: 5
+    query_type: ann
+  prompt_template: "Brug f\xF8lgende modtagne kontekst til at svare p\xE5 sp\xF8rgsm\xE5\
+    l. Brug kun passager der er relevante til at svare p\xE5 sp\xF8rgsm\xE5let, ignorer\
+    \ irrelevante passager. N\xE5r du svarer, citer dine kilder, referer til passagerne\
+    \ og deres metadata.\n\nContext: {context}"
+  tool_description_prompt: "S\xF8g efter dokumenter der er relevante for en brugers\
+    \ foresp\xE6\xF8rgsel hos boligsalg og salgsannoncer i Danmark."
+  vector_search_index: rag.boligsalg.BoligSalgsopstillingLookup_chunked_docs_index
+  vector_search_schema:
+    additional_metadata_columns: []
+    chunk_text: content_chunked
+    document_uri: doc_uri
+    primary_key: chunk_id
+  vector_search_threshold: 0.001
