@@ -1,0 +1,15 @@
+jupyter-book
+livereload
+black
+pytest
+mlflow-skinny[databricks]>=2.18.0
+pydantic>=2.9.2
+databricks-agents
+databricks-sdk[openai]
+databricks-vectorsearch
+pyyaml
+git+https://github.com/unitycatalog/unitycatalog.git#subdirectory=ai/core
+git+https://github.com/unitycatalog/unitycatalog.git#subdirectory=ai/integrations/openai
+tabulate
+pandas
+pyspark
